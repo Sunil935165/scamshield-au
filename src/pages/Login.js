@@ -88,7 +88,7 @@ export default function Login() {
         />
 
         <div style={{textAlign:"right",marginBottom:"20px",marginTop:"-8px"}}>
-          <a href="#" style={{fontSize:"12px",color:"#4f7cff",textDecoration:"none"}}>
+          <a href="/login" style={{fontSize:"12px",color:"#4f7cff",textDecoration:"none"}}>
             Forgot password?
           </a>
         </div>
