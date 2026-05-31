@@ -88,9 +88,16 @@ export default function Login() {
         />
 
         <div style={{textAlign:"right",marginBottom:"20px",marginTop:"-8px"}}>
-          <a href="/login" style={{fontSize:"12px",color:"#4f7cff",textDecoration:"none"}}>
+          <button
+            onClick={() => alert("Please contact support to reset your password.")}
+            style={{
+              fontSize:"12px",color:"#4f7cff",
+              background:"none",border:"none",
+              cursor:"pointer",fontFamily:"inherit",
+              padding:0
+            }}>
             Forgot password?
-          </a>
+          </button>
         </div>
 
         <button
