@@ -40,10 +40,12 @@ export default function Home() {
     setLoading(true);
     setShowScanning(true);
     try {
-      const response = await axios.post("http://localhost:3001/analyse", { text, contentType });
+      const response = await axios.post("https://scamshield-server.onrender.com/analyse", {
+        text,
+        contentType
+      });
       const result = response.data;
 
-      // Save to scan history
       const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
       const newScan = {
         id: Date.now(),
@@ -66,7 +68,7 @@ export default function Home() {
 
       navigate("/results", { state: { result } });
     } catch {
-      showError("Analysis failed. Make sure the server is running.");
+      showError("Analysis failed. Please try again in a moment.");
     }
     setLoading(false);
     setShowScanning(false);
@@ -154,7 +156,6 @@ export default function Home() {
   return (
     <div style={{maxWidth:"580px",margin:"0 auto",padding:"40px 20px"}}>
 
-      {/* Hero */}
       <div style={{textAlign:"center",marginBottom:"40px"}}>
         <div style={{
           display:"inline-flex",alignItems:"center",gap:"8px",
@@ -176,7 +177,6 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Upload zone */}
       <div style={{...card,marginBottom:"16px"}}>
         <label style={{
           display:"block",border:"2px dashed rgba(79,124,255,0.3)",
@@ -232,7 +232,6 @@ export default function Home() {
         />
       </div>
 
-      {/* Content type */}
       <div style={{...card,marginBottom:"16px",padding:"16px 24px"}}>
         <p style={{fontSize:"12px",color:"rgba(255,255,255,0.4)",marginBottom:"12px",letterSpacing:"0.5px",textTransform:"uppercase"}}>Content Type</p>
         <div style={{display:"flex",gap:"8px"}}>
@@ -249,7 +248,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Analyse button */}
       <button
         onClick={handleAnalyse}
         disabled={loading || ocrLoading}
@@ -265,14 +263,12 @@ export default function Home() {
         {loading ? "🔍 Analysing your message..." : ocrLoading ? "📖 Reading image..." : "🔍 Analyse Now"}
       </button>
 
-      {/* Trust badges */}
       <div style={{display:"flex",justifyContent:"center",gap:"24px",marginTop:"24px",flexWrap:"wrap"}}>
         {["🔒 AES-256 Encrypted","🇦🇺 Australian Data","⚡ 3 Second Results"].map(badge => (
           <span key={badge} style={{fontSize:"11px",color:"rgba(255,255,255,0.25)"}}>{badge}</span>
         ))}
       </div>
 
-      {/* Quick links */}
       <div style={{display:"flex",gap:"10px",marginTop:"24px"}}>
         <button onClick={() => navigate("/history")} style={{
           flex:1,padding:"12px",borderRadius:"12px",
