@@ -6,7 +6,6 @@ import { showSuccess, showError, showInfo } from "../components/Toast";
 
 export default function Home() {
   const [text, setText] = useState("");
-  const [contentType, setContentType] = useState("SMS");
   const [loading, setLoading] = useState(false);
   const [ocrLoading, setOcrLoading] = useState(false);
   const [preview, setPreview] = useState(null);
@@ -42,14 +41,14 @@ export default function Home() {
     try {
       const response = await axios.post("https://scamshield-server.onrender.com/analyse", {
         text,
-        contentType
+        contentType: "SMS"
       });
       const result = response.data;
 
       const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
       const newScan = {
         id: Date.now(),
-        type: contentType,
+        type: "Message",
         result: result.classification,
         scamType: result.scamType,
         risk: result.riskPercentage,
@@ -61,9 +60,9 @@ export default function Home() {
       localStorage.setItem("scanHistory", JSON.stringify(history.slice(0, 50)));
 
       if (result.classification === "Likely Scam") {
-        showError(`⚠️ Scam detected! ${result.riskPercentage}% risk score.`);
+        showError(`⚠️ Scam detected!`);
       } else {
-        showSuccess(`✅ Looks safe! Only ${result.riskPercentage}% risk score.`);
+        showSuccess(`✅ Looks safe!`);
       }
 
       navigate("/results", { state: { result } });
@@ -156,6 +155,7 @@ export default function Home() {
   return (
     <div style={{maxWidth:"580px",margin:"0 auto",padding:"40px 20px"}}>
 
+      {/* Hero */}
       <div style={{textAlign:"center",marginBottom:"40px"}}>
         <div style={{
           display:"inline-flex",alignItems:"center",gap:"8px",
@@ -177,6 +177,7 @@ export default function Home() {
         </p>
       </div>
 
+      {/* Upload and paste */}
       <div style={{...card,marginBottom:"16px"}}>
         <label style={{
           display:"block",border:"2px dashed rgba(79,124,255,0.3)",
@@ -232,22 +233,7 @@ export default function Home() {
         />
       </div>
 
-      <div style={{...card,marginBottom:"16px",padding:"16px 24px"}}>
-        <p style={{fontSize:"12px",color:"rgba(255,255,255,0.4)",marginBottom:"12px",letterSpacing:"0.5px",textTransform:"uppercase"}}>Content Type</p>
-        <div style={{display:"flex",gap:"8px"}}>
-          {["SMS","Email","Link","Other"].map(type => (
-            <button key={type} onClick={() => setContentType(type)} style={{
-              flex:1,padding:"10px 4px",borderRadius:"10px",fontSize:"13px",
-              fontWeight:"500",cursor:"pointer",border:"1px solid",transition:"all 0.2s",
-              background: contentType===type ? "linear-gradient(135deg,#4f7cff,#8b5cf6)" : "rgba(255,255,255,0.03)",
-              color: contentType===type ? "#ffffff" : "rgba(255,255,255,0.4)",
-              borderColor: contentType===type ? "transparent" : "rgba(255,255,255,0.08)",
-              boxShadow: contentType===type ? "0 4px 15px rgba(79,124,255,0.3)" : "none"
-            }}>{type}</button>
-          ))}
-        </div>
-      </div>
-
+      {/* Analyse button */}
       <button
         onClick={handleAnalyse}
         disabled={loading || ocrLoading}
@@ -263,12 +249,14 @@ export default function Home() {
         {loading ? "🔍 Analysing your message..." : ocrLoading ? "📖 Reading image..." : "🔍 Analyse Now"}
       </button>
 
+      {/* Trust badges */}
       <div style={{display:"flex",justifyContent:"center",gap:"24px",marginTop:"24px",flexWrap:"wrap"}}>
-        {["🔒 AES-256 Encrypted","🇦🇺 Australian Data","⚡ 3 Second Results"].map(badge => (
+        {["🔒 Private and Secure","🇦🇺 Australian Made","⚡ Results in Seconds"].map(badge => (
           <span key={badge} style={{fontSize:"11px",color:"rgba(255,255,255,0.25)"}}>{badge}</span>
         ))}
       </div>
 
+      {/* Quick links */}
       <div style={{display:"flex",gap:"10px",marginTop:"24px"}}>
         <button onClick={() => navigate("/history")} style={{
           flex:1,padding:"12px",borderRadius:"12px",
