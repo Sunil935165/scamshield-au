@@ -24,7 +24,7 @@ export default function Home() {
       const extracted = result.data.text.trim();
       if (extracted) {
         setText(extracted);
-        showSuccess("Text extracted from image successfully!");
+        showSuccess("Text extracted successfully!");
       } else {
         showError("Could not extract text. Please paste manually.");
       }
@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   const handleAnalyse = async () => {
-    if (!text.trim()) return showError("Please paste some text or upload a screenshot first.");
+    if (!text.trim()) return showError("Please paste a message or upload a screenshot first.");
     setLoading(true);
     setShowScanning(true);
     try {
@@ -60,11 +60,10 @@ export default function Home() {
       localStorage.setItem("scanHistory", JSON.stringify(history.slice(0, 50)));
 
       if (result.classification === "Likely Scam") {
-        showError(`⚠️ Scam detected!`);
+        showError("⚠️ Scam detected!");
       } else {
-        showSuccess(`✅ Looks safe!`);
+        showSuccess("✅ Looks safe!");
       }
-
       navigate("/results", { state: { result } });
     } catch {
       showError("Analysis failed. Please try again in a moment.");
@@ -73,79 +72,43 @@ export default function Home() {
     setShowScanning(false);
   };
 
-  const card = {
-    background:"rgba(255,255,255,0.03)",
-    border:"1px solid rgba(255,255,255,0.08)",
-    borderRadius:"20px",padding:"24px",
-    backdropFilter:"blur(10px)"
-  };
-
   if (showScanning) {
     return (
       <div style={{
         position:"fixed",inset:0,
-        background:"linear-gradient(135deg,#0a0e27,#0d1537)",
+        background:"#ffffff",
         display:"flex",flexDirection:"column",
         alignItems:"center",justifyContent:"center",
         zIndex:999
       }}>
-        <div style={{position:"relative",width:"160px",height:"160px",marginBottom:"32px"}}>
+        <div style={{position:"relative",width:"120px",height:"120px",marginBottom:"32px"}}>
           <div style={{
             position:"absolute",inset:0,borderRadius:"50%",
-            border:"2px solid rgba(79,124,255,0.2)",
-            animation:"ping 1.5s cubic-bezier(0,0,0.2,1) infinite"
+            border:"3px solid rgba(220,38,38,0.15)",
+            animation:"ping2 1.5s cubic-bezier(0,0,0.2,1) infinite"
           }}></div>
           <div style={{
-            position:"absolute",inset:"10px",borderRadius:"50%",
-            border:"2px solid rgba(79,124,255,0.3)",
-            animation:"ping 1.5s cubic-bezier(0,0,0.2,1) infinite 0.3s"
-          }}></div>
-          <div style={{
-            position:"absolute",inset:"20px",borderRadius:"50%",
-            border:"2px solid rgba(139,92,246,0.4)",
-            animation:"ping 1.5s cubic-bezier(0,0,0.2,1) infinite 0.6s"
+            position:"absolute",inset:"15px",borderRadius:"50%",
+            border:"3px solid rgba(220,38,38,0.25)",
+            animation:"ping2 1.5s cubic-bezier(0,0,0.2,1) infinite 0.4s"
           }}></div>
           <div style={{
             position:"absolute",inset:"30px",borderRadius:"50%",
-            background:"linear-gradient(135deg,#4f7cff,#8b5cf6)",
+            background:"linear-gradient(135deg,#dc2626,#991b1b)",
             display:"flex",alignItems:"center",justifyContent:"center",
-            fontSize:"36px",boxShadow:"0 0 40px rgba(79,124,255,0.6)"
+            fontSize:"28px",boxShadow:"0 8px 30px rgba(220,38,38,0.4)"
           }}>🛡️</div>
         </div>
-        <h2 style={{
-          fontSize:"22px",fontWeight:"800",marginBottom:"8px",
-          background:"linear-gradient(135deg,#ffffff,#a0b4ff)",
-          WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"
-        }}>Analysing your message...</h2>
-        <p style={{fontSize:"14px",color:"rgba(255,255,255,0.4)",marginBottom:"32px"}}>
-          Our AI is checking for scam patterns
+        <h2 style={{fontSize:"22px",fontWeight:"700",color:"#111827",marginBottom:"8px"}}>
+          Analysing your message...
+        </h2>
+        <p style={{fontSize:"14px",color:"#6b7280"}}>
+          AI is checking for scam patterns
         </p>
-        <div style={{display:"flex",gap:"8px",flexWrap:"wrap",justifyContent:"center"}}>
-          {["Extracting text","Checking patterns","Calculating risk"].map((step,i) => (
-            <div key={i} style={{
-              display:"flex",alignItems:"center",gap:"6px",
-              background:"rgba(255,255,255,0.05)",
-              border:"1px solid rgba(255,255,255,0.08)",
-              borderRadius:"20px",padding:"6px 12px"
-            }}>
-              <div style={{
-                width:"6px",height:"6px",borderRadius:"50%",
-                background:"#4f7cff",boxShadow:"0 0 8px #4f7cff",
-                animation:"pulse 1s infinite",
-                animationDelay:`${i * 0.3}s`
-              }}></div>
-              <span style={{fontSize:"11px",color:"rgba(255,255,255,0.5)"}}>{step}</span>
-            </div>
-          ))}
-        </div>
         <style>{`
-          @keyframes ping {
+          @keyframes ping2 {
             0% { transform: scale(1); opacity: 1; }
-            75%, 100% { transform: scale(1.5); opacity: 0; }
-          }
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            75%, 100% { transform: scale(1.6); opacity: 0; }
           }
         `}</style>
       </div>
@@ -153,125 +116,201 @@ export default function Home() {
   }
 
   return (
-    <div style={{maxWidth:"580px",margin:"0 auto",padding:"40px 20px"}}>
+    <div style={{
+      background:"#ffffff",
+      minHeight:"100vh",
+      color:"#111827",
+      fontFamily:"-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    }}>
 
-      {/* Hero */}
-      <div style={{textAlign:"center",marginBottom:"40px"}}>
-        <div style={{
-          display:"inline-flex",alignItems:"center",gap:"8px",
-          background:"rgba(79,124,255,0.1)",
-          border:"1px solid rgba(79,124,255,0.2)",
-          borderRadius:"20px",padding:"6px 16px",marginBottom:"20px"
-        }}>
-          <div style={{width:"6px",height:"6px",borderRadius:"50%",background:"#4ade80",boxShadow:"0 0 8px #4ade80"}}></div>
-          <span style={{fontSize:"12px",color:"rgba(255,255,255,0.7)",letterSpacing:"0.5px"}}>AI Protection Active</span>
-        </div>
-        <h1 style={{
-          fontSize:"36px",fontWeight:"800",
-          background:"linear-gradient(135deg,#ffffff 0%,#a0b4ff 100%)",
-          WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",
-          lineHeight:"1.2",marginBottom:"12px",letterSpacing:"-0.5px"
-        }}>Detect Scams<br/>Instantly</h1>
-        <p style={{fontSize:"15px",color:"rgba(255,255,255,0.5)",lineHeight:"1.6"}}>
-          Upload a screenshot or paste any suspicious message.<br/>Our AI analyses it in seconds.
-        </p>
-      </div>
-
-      {/* Upload and paste */}
-      <div style={{...card,marginBottom:"16px"}}>
-        <label style={{
-          display:"block",border:"2px dashed rgba(79,124,255,0.3)",
-          borderRadius:"14px",padding:"28px",textAlign:"center",
-          background:"rgba(79,124,255,0.05)",cursor:"pointer",marginBottom:"20px"
-        }}>
-          <div style={{fontSize:"32px",marginBottom:"10px"}}>📸</div>
-          <p style={{
-            fontWeight:"600",fontSize:"14px",marginBottom:"4px",
-            background:"linear-gradient(135deg,#4f7cff,#8b5cf6)",
-            WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"
+      {/* Hero Section */}
+      <div style={{
+        maxWidth:"1100px",margin:"0 auto",
+        padding:"80px 40px 60px",
+        display:"grid",gridTemplateColumns:"1fr 1fr",
+        gap:"60px",alignItems:"center"
+      }}>
+        <div>
+          <div style={{
+            display:"inline-flex",alignItems:"center",gap:"8px",
+            background:"#fef2f2",border:"1px solid #fecaca",
+            borderRadius:"20px",padding:"6px 14px",marginBottom:"24px"
           }}>
-            {ocrLoading ? "Reading your image..." : "Upload a Screenshot"}
-          </p>
-          <p style={{fontSize:"12px",color:"rgba(255,255,255,0.3)"}}>
-            JPG or PNG — text extracted automatically
-          </p>
-          <input type="file" accept="image/*" style={{display:"none"}} onChange={handleImageUpload}/>
-        </label>
-
-        {preview && (
-          <div style={{marginBottom:"20px",textAlign:"center"}}>
-            <img src={preview} alt="preview" style={{
-              maxWidth:"100%",maxHeight:"140px",borderRadius:"10px",
-              border:"1px solid rgba(255,255,255,0.1)"
-            }}/>
-            {ocrLoading && (
-              <p style={{fontSize:"12px",color:"rgba(255,255,255,0.5)",marginTop:"8px"}}>
-                Extracting text from image...
-              </p>
-            )}
+            <div style={{width:"6px",height:"6px",borderRadius:"50%",background:"#dc2626"}}></div>
+            <span style={{fontSize:"12px",color:"#dc2626",fontWeight:"600",letterSpacing:"0.5px",textTransform:"uppercase"}}>
+              AI Scam Protection
+            </span>
           </div>
-        )}
 
-        <div style={{display:"flex",alignItems:"center",gap:"12px",marginBottom:"16px"}}>
-          <div style={{flex:1,height:"1px",background:"rgba(255,255,255,0.06)"}}></div>
-          <span style={{fontSize:"11px",color:"rgba(255,255,255,0.25)",letterSpacing:"0.5px",textTransform:"uppercase"}}>or paste text</span>
-          <div style={{flex:1,height:"1px",background:"rgba(255,255,255,0.06)"}}></div>
+          <h1 style={{
+            fontSize:"52px",fontWeight:"800",lineHeight:"1.1",
+            color:"#111827",marginBottom:"20px",letterSpacing:"-1px"
+          }}>
+            Detect scams<br/>
+            <span style={{color:"#dc2626"}}>instantly</span>
+          </h1>
+
+          <p style={{
+            fontSize:"18px",color:"#6b7280",lineHeight:"1.7",
+            marginBottom:"36px",maxWidth:"440px"
+          }}>
+            Protect yourself and your family from online scams. Upload a screenshot or paste a suspicious message — our AI checks it in seconds.
+          </p>
+
+          <div style={{display:"flex",gap:"16px",flexWrap:"wrap",marginBottom:"40px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+              <div style={{width:"18px",height:"18px",borderRadius:"50%",background:"#dcfce7",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"10px"}}>✓</div>
+              <span style={{fontSize:"14px",color:"#374151",fontWeight:"500"}}>No signup required to try</span>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+              <div style={{width:"18px",height:"18px",borderRadius:"50%",background:"#dcfce7",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"10px"}}>✓</div>
+              <span style={{fontSize:"14px",color:"#374151",fontWeight:"500"}}>Results in 3 seconds</span>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+              <div style={{width:"18px",height:"18px",borderRadius:"50%",background:"#dcfce7",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"10px"}}>✓</div>
+              <span style={{fontSize:"14px",color:"#374151",fontWeight:"500"}}>100% free</span>
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div style={{display:"flex",gap:"32px"}}>
+            {[
+              { num:"$2.18B", label:"Lost to scams in Australia 2025" },
+              { num:"26.5%", label:"Of losses affect elderly Australians" },
+              { num:"481K+", label:"Scam reports in 2025" },
+            ].map(s => (
+              <div key={s.num}>
+                <div style={{fontSize:"24px",fontWeight:"800",color:"#dc2626"}}>{s.num}</div>
+                <div style={{fontSize:"11px",color:"#9ca3af",marginTop:"2px",lineHeight:"1.4"}}>{s.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <textarea
-          style={{
-            width:"100%",background:"rgba(255,255,255,0.05)",
-            border:"1px solid rgba(255,255,255,0.08)",
-            borderRadius:"12px",padding:"14px 16px",
-            fontSize:"14px",color:"rgba(255,255,255,0.85)",
-            height:"110px",resize:"none",boxSizing:"border-box",
-            fontFamily:"inherit",outline:"none",lineHeight:"1.6"
-          }}
-          placeholder="Paste your suspicious SMS, email or link here..."
-          value={text}
-          onChange={e => setText(e.target.value)}
-        />
+        {/* Scan card */}
+        <div style={{
+          background:"#f9fafb",
+          border:"1px solid #e5e7eb",
+          borderRadius:"20px",
+          padding:"32px",
+          boxShadow:"0 20px 60px rgba(0,0,0,0.08)"
+        }}>
+          <p style={{fontSize:"14px",fontWeight:"600",color:"#374151",marginBottom:"16px"}}>
+            🔍 Check a message now
+          </p>
+
+          {/* Upload zone */}
+          <label style={{
+            display:"block",border:"2px dashed #d1d5db",
+            borderRadius:"12px",padding:"20px",textAlign:"center",
+            background:"white",cursor:"pointer",marginBottom:"16px",
+            transition:"border-color 0.2s"
+          }}>
+            <div style={{fontSize:"28px",marginBottom:"8px"}}>📸</div>
+            <p style={{fontWeight:"600",fontSize:"13px",color:"#374151",marginBottom:"2px"}}>
+              {ocrLoading ? "Reading image..." : "Upload a screenshot"}
+            </p>
+            <p style={{fontSize:"12px",color:"#9ca3af"}}>JPG or PNG</p>
+            <input type="file" accept="image/*" style={{display:"none"}} onChange={handleImageUpload}/>
+          </label>
+
+          {preview && (
+            <div style={{marginBottom:"16px",textAlign:"center"}}>
+              <img src={preview} alt="preview" style={{
+                maxWidth:"100%",maxHeight:"100px",borderRadius:"8px",
+                border:"1px solid #e5e7eb"
+              }}/>
+            </div>
+          )}
+
+          <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"16px"}}>
+            <div style={{flex:1,height:"1px",background:"#e5e7eb"}}></div>
+            <span style={{fontSize:"11px",color:"#9ca3af",textTransform:"uppercase",letterSpacing:"0.5px"}}>or paste text</span>
+            <div style={{flex:1,height:"1px",background:"#e5e7eb"}}></div>
+          </div>
+
+          <textarea
+            style={{
+              width:"100%",background:"white",
+              border:"1px solid #d1d5db",borderRadius:"10px",
+              padding:"12px 14px",fontSize:"14px",color:"#111827",
+              height:"100px",resize:"none",boxSizing:"border-box",
+              fontFamily:"inherit",outline:"none",lineHeight:"1.6",
+              marginBottom:"14px"
+            }}
+            placeholder="Paste your suspicious SMS, email or link here..."
+            value={text}
+            onChange={e => setText(e.target.value)}
+          />
+
+          <button
+            onClick={handleAnalyse}
+            disabled={loading || ocrLoading}
+            style={{
+              width:"100%",padding:"14px",
+              background:(loading||ocrLoading) ? "#9ca3af" : "#dc2626",
+              color:"white",border:"none",borderRadius:"10px",
+              fontSize:"15px",fontWeight:"700",cursor:"pointer",
+              transition:"all 0.2s",letterSpacing:"0.3px"
+            }}
+          >
+            {loading ? "Analysing..." : ocrLoading ? "Reading image..." : "Check Now →"}
+          </button>
+
+          <p style={{fontSize:"11px",color:"#9ca3af",textAlign:"center",marginTop:"10px"}}>
+            🔒 Private and secure — your data is never stored
+          </p>
+        </div>
       </div>
 
-      {/* Analyse button */}
-      <button
-        onClick={handleAnalyse}
-        disabled={loading || ocrLoading}
-        style={{
-          width:"100%",padding:"16px",
-          background:(loading||ocrLoading) ? "rgba(79,124,255,0.3)" : "linear-gradient(135deg,#4f7cff 0%,#8b5cf6 100%)",
-          color:"white",border:"none",borderRadius:"14px",
-          fontSize:"16px",fontWeight:"700",cursor:"pointer",
-          boxShadow:(loading||ocrLoading) ? "none" : "0 8px 30px rgba(79,124,255,0.4)",
-          letterSpacing:"0.3px",transition:"all 0.3s"
-        }}
-      >
-        {loading ? "🔍 Analysing your message..." : ocrLoading ? "📖 Reading image..." : "🔍 Analyse Now"}
-      </button>
-
-      {/* Trust badges */}
-      <div style={{display:"flex",justifyContent:"center",gap:"24px",marginTop:"24px",flexWrap:"wrap"}}>
-        {["🔒 Private and Secure","🇦🇺 Australian Made","⚡ Results in Seconds"].map(badge => (
-          <span key={badge} style={{fontSize:"11px",color:"rgba(255,255,255,0.25)"}}>{badge}</span>
-        ))}
+      {/* Features strip */}
+      <div style={{
+        background:"#f9fafb",
+        borderTop:"1px solid #e5e7eb",
+        borderBottom:"1px solid #e5e7eb",
+        padding:"40px"
+      }}>
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"32px"}}>
+            {[
+              { icon:"🤖", title:"AI-Powered Detection", desc:"Claude AI analyses every message against thousands of known Australian scam patterns" },
+              { icon:"🔊", title:"Read Aloud", desc:"Have results read to you in English, Mandarin, Japanese, Spanish and more" },
+              { icon:"🔔", title:"Family Alerts", desc:"Automatically email a trusted family member when a scam is detected" },
+            ].map(f => (
+              <div key={f.title} style={{display:"flex",gap:"16px",alignItems:"flex-start"}}>
+                <div style={{
+                  width:"44px",height:"44px",borderRadius:"12px",
+                  background:"#fef2f2",flexShrink:0,
+                  display:"flex",alignItems:"center",justifyContent:"center",
+                  fontSize:"20px"
+                }}>{f.icon}</div>
+                <div>
+                  <p style={{fontSize:"15px",fontWeight:"600",color:"#111827",marginBottom:"4px"}}>{f.title}</p>
+                  <p style={{fontSize:"13px",color:"#6b7280",lineHeight:"1.6"}}>{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Quick links */}
-      <div style={{display:"flex",gap:"10px",marginTop:"24px"}}>
+      <div style={{maxWidth:"1100px",margin:"0 auto",padding:"32px 40px",display:"flex",gap:"12px"}}>
         <button onClick={() => navigate("/history")} style={{
-          flex:1,padding:"12px",borderRadius:"12px",
-          background:"rgba(255,255,255,0.03)",
-          border:"1px solid rgba(255,255,255,0.08)",
-          color:"rgba(255,255,255,0.5)",fontSize:"13px",
-          cursor:"pointer",fontFamily:"inherit"
-        }}>📋 View History</button>
+          padding:"10px 20px",borderRadius:"8px",
+          background:"white",border:"1px solid #e5e7eb",
+          color:"#374151",fontSize:"13px",fontWeight:"500",cursor:"pointer"
+        }}>📋 View Scan History</button>
         <button onClick={() => navigate("/tips")} style={{
-          flex:1,padding:"12px",borderRadius:"12px",
-          background:"rgba(255,255,255,0.03)",
-          border:"1px solid rgba(255,255,255,0.08)",
-          color:"rgba(255,255,255,0.5)",fontSize:"13px",
-          cursor:"pointer",fontFamily:"inherit"
-        }}>💡 Scam Tips</button>
+          padding:"10px 20px",borderRadius:"8px",
+          background:"white",border:"1px solid #e5e7eb",
+          color:"#374151",fontSize:"13px",fontWeight:"500",cursor:"pointer"
+        }}>💡 Scam Tips & News</button>
+        <button onClick={() => navigate("/how-it-works")} style={{
+          padding:"10px 20px",borderRadius:"8px",
+          background:"white",border:"1px solid #e5e7eb",
+          color:"#374151",fontSize:"13px",fontWeight:"500",cursor:"pointer"
+        }}>❓ How It Works</button>
       </div>
     </div>
   );
