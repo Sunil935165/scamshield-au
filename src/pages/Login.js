@@ -16,7 +16,7 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       showSuccess("Welcome back! Logged in successfully.");
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       if (err.code === "auth/user-not-found") showError("No account found. Please register first.");
       else if (err.code === "auth/wrong-password") showError("Incorrect password. Please try again.");

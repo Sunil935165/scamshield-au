@@ -52,7 +52,7 @@ export default function Navbar() {
         position:"sticky",top:0,zIndex:100
       }}>
         {/* Logo */}
-        <Link to="/" style={{display:"flex",alignItems:"center",gap:"10px",textDecoration:"none"}}>
+        <Link to="/home" style={{display:"flex",alignItems:"center",gap:"10px",textDecoration:"none"}}>
           <div style={{
             width:"34px",height:"34px",
             background:"linear-gradient(135deg,#4f7cff,#8b5cf6)",
@@ -70,7 +70,7 @@ export default function Navbar() {
         <div style={{display:"flex",gap:"4px",alignItems:"center"}}>
           {user ? (
             <>
-              {navLink("/", "🔍", "Scan")}
+              {navLink("/home", "🔍", "Scan")}
               {navLink("/history", "📋", "History")}
               {navLink("/tips", "💡", "Tips")}
               {navLink("/analytics", "📊", "Stats")}
